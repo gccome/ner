@@ -1,4 +1,4 @@
-Jean B-PER
+      Jean B-PER
 Pierre I-PER
 lives O
 in O
@@ -102,9 +102,8 @@ won O
 an O
 oscar O
 
-A O
+This O
 is O
-a O
-simple O
+54 O
 tests B-TEST
 ! O

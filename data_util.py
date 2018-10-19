@@ -130,7 +130,7 @@ def create_vocabulary(datasets, vocab_words_path, tags_path, max_vocab_words_siz
                 word_counts.update(words)
                 tags_counts.update(tags)
         words_vocab = sorted(word_counts, key=word_counts.get, reverse=True)
-        print(words_vocab)
+        # print(words_vocab)
         tags_vocab = sorted(tags_counts, key=tags_counts.get, reverse=True)
 
         # add NUM if not in vocab

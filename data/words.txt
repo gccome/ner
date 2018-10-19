@@ -1,7 +1,6 @@
 _UNK
-_NUM
-a
 union
+a
 is
 jean
 pierre
@@ -21,6 +20,7 @@ actor
 won
 an
 oscar
-simple
+this
+_NUM
 tests
 !
