@@ -5,6 +5,7 @@ import pyprind
 
 
 # shared global variables to be imported from model also
+PAD = "_PAD"
 UNK = "_UNK"
 NUM = "_NUM"
 NONE = "O"
@@ -146,6 +147,52 @@ def create_vocabulary(datasets, vocab_words_path, tags_path, max_vocab_words_siz
         write_vocab(tags_vocab, tags_path)
 
 
+def create_char_vocabulary(datasets, vocab_path):
+    """
+    Create character vocabulary.
+    :param datasets:
+    :param vocab_path:
+    :return:
+    """
+    logger = logging.getLogger(__name__)
+    if not gfile.Exists(vocab_path):
+        logger.info('Creating character vocabulary.')
+        counts = Counter()
+        for dataset in datasets:
+            for words, _ in dataset:
+                for word in words:
+                    counts.update(word)
+        char_vocab = sorted(counts, key=counts.get, reverse=True)
+        write_vocab(char_vocab, vocab_path)
+
+
+def initialize_vocab(vocab_path, kind):
+    """
+    Initialize/load vocab from a file
+    :param vocab_path: path to vocab
+    :param kind: string, 'words', 'tags', or 'chars'
+    :return:
+    """
+    if gfile.Exists(vocab_path):
+        if kind == 'words' or kind == 'chars':
+            # put pad token as the first one
+            vocab_list = [PAD]
+        elif kind == 'tags':
+            vocab_list = []
+        with gfile.GFile(vocab_path, mode='r') as f:
+            for line in f:
+                line = line.strip()
+                vocab_list.append(line)
+        vocab = {word: idx for idx, word in enumerate(vocab_list)}
+        reversed_vocab = {idx: word for idx, word in enumerate(vocab_list)}
+        return vocab, reversed_vocab
+    else:
+        raise ValueError('Vocabulary file {} not found.'.format(vocab_path))
+
+
+
+
+
 def write_vocab(vocab, filename):
     """
     Write vocab to a file. Writes one word per line.
@@ -163,8 +210,18 @@ def write_vocab(vocab, filename):
 
 if __name__ == '__main__':
     processing_word = get_processing_word(lowercase=True)
-    dataset = Dataset('./data/test.txt', processing_word=processing_word)
+    dataset = Dataset('./data/test1.txt', processing_word=processing_word)
     create_vocabulary([dataset], './data/words.txt', './data/tags.txt')
+    dataset = Dataset('./data/test1.txt')
+    create_char_vocabulary([dataset], './data/chars.txt')
+    vocab_words, _ = initialize_vocab('./data/words.txt', 'words')
+    print(vocab_words)
+    vocab_tags, _ = initialize_vocab('./data/tags.txt', 'tags')
+    print(vocab_tags)
+    vocab_chars, _ = initialize_vocab('./data/chars.txt', 'chars')
+    print(vocab_chars)
+
+    
 
 
 

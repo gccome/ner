@@ -1,7 +1,5 @@
 _UNK
-union
-a
-is
+_NUM
 jean
 pierre
 lives
@@ -9,18 +7,3 @@ in
 new
 york
 .
-the
-european
-political
-and
-economic
-french
-american
-actor
-won
-an
-oscar
-this
-_NUM
-tests
-!
